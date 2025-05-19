@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 17:14:29 by ialashqa          #+#    #+#             */
-/*   Updated: 2025/05/19 16:45:38 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/19 16:49:25 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void draw_lines(t_player *player, t_game *game, float start_x, int i)
     ray_y = player->y;
     while(!sensor(ray_x, ray_y, game))
     {
-        put_pixel(ray_x, ray_y, 0xFF0000, game);
+        put_pixel(ray_x, ray_y, 0xFF00FF, game);
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
