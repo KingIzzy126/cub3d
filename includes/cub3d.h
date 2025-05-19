@@ -6,16 +6,16 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/15 15:50:53 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/17 15:07:48 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_H
 #define GAME_H
 
-# define WIDTH 800
-# define HEIGHT 800
-# define WALL 35
+# define WIDTH 750
+# define HEIGHT 700
+# define WALL 40
 
 # define W 13
 # define A 0

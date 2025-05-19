@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 17:14:29 by ialashqa          #+#    #+#             */
-/*   Updated: 2025/05/16 15:28:42 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/19 16:45:38 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,15 @@ char **get_map(void)
     
     map = malloc(sizeof(char *) * 13);
     map[0] = "111111111111111111";
-    map[1] = "100000000000000001";
-    map[2] = "100000001110000001";
-    map[3] = "100000011111000001";
+    map[1] = "100010000000000001";
+    map[2] = "100010000000010001";
+    map[3] = "100000000000000001";
     map[4] = "100000001110000001";
     map[5] = "100000001110000001";
     map[6] = "100000001110000001";
-    map[7] = "100000111011100001";
-    map[8] = "1000001110111000001";
-    map[9] = "100000111011100001";
+    map[7] = "100000100000100001";
+    map[8] = "101000000000000101";
+    map[9] = "100000100000100001";
     map[10] = "100000000000000001";
     map[11] = "111111111111111111";
     map[12] = NULL;
@@ -134,24 +134,46 @@ bool sensor(float px, float py, t_game *game)
     return (false);
 }
 
-int draw_loop(t_game *game)
+void draw_lines(t_player *player, t_game *game, float start_x, int i)
 {
-    t_player *player = &game->player;
-    move_player(player);
-    clear_trail(game);
-    draw_square(player->x, player->y, 10, 0x00FF00, game);
-    draw_map(game);
+    float cos_angle;
+    float sin_angle;
+    float ray_x;
+    float ray_y;
+    (void)i;
     
-    float ray_x = player->x;
-    float ray_y = player->y;
-    float cos_angle = cos(player->angle);
-    float sin_angle = sin(player->angle);
-    
+    cos_angle = cos(start_x);
+    sin_angle = sin(start_x);
+    ray_x = player->x;
+    ray_y = player->y;
     while(!sensor(ray_x, ray_y, game))
     {
         put_pixel(ray_x, ray_y, 0xFF0000, game);
         ray_x += cos_angle;
         ray_y += sin_angle;
+    }
+}
+int draw_loop(t_game *game)
+{
+    float fraction;
+    float start_x;
+    int i;
+    t_player *player;
+    
+    player = &game->player;
+    move_player(player);
+    clear_trail(game);
+    draw_square(player->x, player->y, 10, 0x00FF00, game);
+    draw_map(game);
+    
+    fraction = PI / 3 / WIDTH;
+    start_x = player->angle - PI / 6;
+    i = 0;
+    while(i < WIDTH)
+    {
+        draw_lines(player, game, start_x, i);
+        start_x += fraction;
+        i++;
     }
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
     return (0);
