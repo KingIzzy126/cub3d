@@ -7,12 +7,8 @@ RM = rm -f
 LIBFT = ./libft/libft.a
 MLX = ./mlx
 
-SRCS =	draw.c \
-		init.c \
-		main.c \
+SRCS =	main.c \
 		player.c \
-		raycast.c \
-		utils.c \
 
 SRC = $(addprefix ./srcs/,$(SRCS))
 OBJS = $(SRC:.c=.o)
