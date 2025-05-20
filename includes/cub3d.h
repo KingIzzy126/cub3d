@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 18:17:55 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 18:23:04 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ void clear_trail(t_game *game);
 void init_game(t_game *game);
 char **get_map(void);
 
+// player.c
+void	init_player(t_player *player);
+int     key_press(int keycode, t_player *player);
+int     key_release(int keycode, t_player *player);
+void    move_player(t_player *player);
+
 // raycast.c
 int draw_loop(t_game *game);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
@@ -83,12 +89,5 @@ void draw_lines(t_player *player, t_game *game, float start_x, int i);
 bool sensor(float px, float py, t_game *game);
 float distance(float x1, float y1, float x2, float y2, t_game *game);
 int	close_window(t_game *game);
-
-// player.c
-void	init_player(t_player *player);
-int     key_press(int keycode, t_player *player);
-int     key_release(int keycode, t_player *player);
-void    move_player(t_player *player);
-
 
 #endif
