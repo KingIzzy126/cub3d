@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 19:57:31 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 20:52:22 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define WIDTH 750
 # define HEIGHT 700
 # define WALL 40
+# define MINIMAP_SCALE 0.2
 
 # define W 13
 # define A 0
@@ -65,13 +66,30 @@ typedef struct s_game
     char **map;
 }   t_game;
 
-int	close_window(t_game *game);
+// draw.c 
+void put_pixel(int x, int y, int color, t_game *game);
+void draw_square(int x, int y, int size, int color, t_game *game);
+void draw_map(t_game *game);
+void clear_trail(t_game *game);
+void draw_minimap(t_game *game);
+
+// init.c
+void init_game(t_game *game);
+char **get_map(void);
 
 // player.c
-void    init_player(t_player *player);
+void	init_player(t_player *player);
 int     key_press(int keycode, t_player *player);
 int     key_release(int keycode, t_player *player);
 void    move_player(t_player *player);
 
+// raycast.c
+int draw_loop(t_game *game);
+void draw_lines(t_player *player, t_game *game, float start_x, int i);
+
+// utils.c
+bool sensor(float px, float py, t_game *game);
+float distance(float x1, float y1, float x2, float y2, t_game *game);
+int	close_window(t_game *game);
 
 #endif
