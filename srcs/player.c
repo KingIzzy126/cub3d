@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 17:08:02 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 17:27:58 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	key_press(int keycode, t_player *player)
 		player->left_rotate = true;
 	if (keycode == RIGHT)
 		player->right_rotate = true;
+	if (keycode == ESC)
+		close_window(player->game);
 	return (0);
 }
 

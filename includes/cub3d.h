@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/17 15:07:48 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 18:17:55 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define A 0
 # define S 1
 # define D 2
+# define ESC 53
 # define LEFT 123
 # define RIGHT 124
 
@@ -31,6 +32,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
+
+typedef struct s_game t_game;
 
 typedef struct s_player
 {
@@ -43,7 +46,8 @@ typedef struct s_player
     bool key_left;
     bool key_right;
     bool left_rotate;
-    bool right_rotate; 
+    bool right_rotate;
+    t_game *game;
 }   t_player;
 
 typedef struct s_game
@@ -61,8 +65,27 @@ typedef struct s_game
     char **map;
 }   t_game;
 
+// draw.c 
+void put_pixel(int x, int y, int color, t_game *game);
+void draw_square(int x, int y, int size, int color, t_game *game);
+void draw_map(t_game *game);
+void clear_trail(t_game *game);
+
+// init.c
+void init_game(t_game *game);
+char **get_map(void);
+
+// raycast.c
+int draw_loop(t_game *game);
+void draw_lines(t_player *player, t_game *game, float start_x, int i);
+
+// utils.c
+bool sensor(float px, float py, t_game *game);
+float distance(float x1, float y1, float x2, float y2, t_game *game);
+int	close_window(t_game *game);
+
 // player.c
-void    init_player(t_player *player);
+void	init_player(t_player *player);
 int     key_press(int keycode, t_player *player);
 int     key_release(int keycode, t_player *player);
 void    move_player(t_player *player);
