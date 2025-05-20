@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/17 15:08:54 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 15:51:29 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void move_player(t_player *player)
     float cos_angle;
     float sin_angle;
 
-    speed = 5;
-    angle_speed = 0.1;
+    speed = 3;
+    angle_speed = 0.03;
     cos_angle = cos(player->angle);
     sin_angle = sin(player->angle);
     if(player->left_rotate)

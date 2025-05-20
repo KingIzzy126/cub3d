@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 17:14:29 by ialashqa          #+#    #+#             */
-/*   Updated: 2025/05/19 16:49:25 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/05/20 16:34:11 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,29 @@ bool sensor(float px, float py, t_game *game)
     return (false);
 }
 
+float distance(float x1, float y1, float x2, float y2, t_game *game)
+{
+    float delta_x;
+    float delta_y;
+    float angle;
+    float fix_dist;
+
+    delta_x = x2 - x1;
+    delta_y = y2 - y1;
+    angle = atan2(delta_y, delta_x) - game->player.angle;
+    fix_dist = sqrt(delta_x * delta_x + delta_y * delta_y) * cos(angle);
+    return (fix_dist);
+}
 void draw_lines(t_player *player, t_game *game, float start_x, int i)
 {
     float cos_angle;
     float sin_angle;
     float ray_x;
     float ray_y;
+    float dist;
+    float height;
+    int start_y;
+    int end;
     (void)i;
     
     cos_angle = cos(start_x);
@@ -148,11 +165,21 @@ void draw_lines(t_player *player, t_game *game, float start_x, int i)
     ray_y = player->y;
     while(!sensor(ray_x, ray_y, game))
     {
-        put_pixel(ray_x, ray_y, 0xFF00FF, game);
+        // put_pixel(ray_x, ray_y, 0xFF00FF, game);
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
+    dist = distance(player->x, player->y, ray_x, ray_y, game);
+    height = (WALL / dist) * (WIDTH / 2);
+    start_y = (HEIGHT - height) / 2;
+    end = start_y + height;
+    while(start_y < end)
+    {
+        put_pixel(i, start_y, 255, game);
+        start_y++;
+    }
 }
+
 int draw_loop(t_game *game)
 {
     float fraction;
@@ -163,8 +190,8 @@ int draw_loop(t_game *game)
     player = &game->player;
     move_player(player);
     clear_trail(game);
-    draw_square(player->x, player->y, 10, 0x00FF00, game);
-    draw_map(game);
+    // draw_square(player->x, player->y, 10, 0x00FF00, game);
+    // draw_map(game);
     
     fraction = PI / 3 / WIDTH;
     start_x = player->angle - PI / 6;
