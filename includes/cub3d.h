@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 20:52:22 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/04 15:55:57 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,11 @@ typedef struct s_game
     int bpp;
     int size_line;
     int endian;
-    t_player player;
+    int floor_color;
+    int ceiling_color;
 
     char **map;
+    t_player player;
 }   t_game;
 
 // draw.c 
@@ -86,6 +88,7 @@ void    move_player(t_player *player);
 // raycast.c
 int draw_loop(t_game *game);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
+void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);

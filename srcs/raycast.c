@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:04:18 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 20:52:08 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/04 16:02:56 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void draw_lines(t_player *player, t_game *game, float start_x, int i)
     height = (WALL / dist) * (WIDTH / 2);
     start_y = (HEIGHT - height) / 2;
     end = start_y + height;
+    draw_floor_ceiling(game, i, start_y, end, game->ceiling_color, game->floor_color);
     while(start_y < end)
     {
         put_pixel(i, start_y, 255, game);
@@ -68,4 +69,22 @@ int draw_loop(t_game *game)
     draw_minimap(game);
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
     return (0);
+}
+
+void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color)
+{
+    int y;
+
+    y = 0;
+    while (y < wall_top)
+    {
+        put_pixel(x, y, ceiling_color, game);
+        y++;
+    }
+    y = wall_bottom;
+    while (y < HEIGHT)
+    {
+        put_pixel(x, y, floor_color, game);
+        y++;
+    }
 }
