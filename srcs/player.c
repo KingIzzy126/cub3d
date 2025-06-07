@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 17:27:58 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/04 16:57:16 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,29 @@ void	move_player(t_player *player)
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	rotate_player(player);
+	moves(player, speed, cos_angle, sin_angle);
+}
+
+void	moves(t_player *player, int speed, float cos_a, float sin_a)
+{
 	if (player->key_up)
 	{
-		player->x += speed * cos_angle;
-		player->y += speed * sin_angle;
+		player->x += speed * cos_a;
+		player->y += speed * sin_a;
 	}
 	if (player->key_down)
 	{
-		player->x -= speed * cos_angle;
-		player->y -= speed * sin_angle;
+		player->x -= speed * cos_a;
+		player->y -= speed * sin_a;
 	}
 	if (player->key_left)
 	{
-		player->x += speed * sin_angle;
-		player->y -= speed * cos_angle;
+		player->x += speed * sin_a;
+		player->y -= speed * cos_a;
 	}
 	if (player->key_right)
 	{
-		player->x -= speed * sin_angle;
-		player->y += speed * cos_angle;
+		player->x -= speed * sin_a;
+		player->y += speed * cos_a;
 	}
 }
