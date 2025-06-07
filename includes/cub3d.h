@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 15:25:22 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 20:13:20 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,18 @@ void clear_trail(t_game *game);
 void init_game(t_game *game);
 char **get_map(void);
 
+// moves.c
+void	move_up(t_player *player, int speed, float cos_a, float sin_a);
+void	move_down(t_player *player, int speed, float cos_a, float sin_a);
+void	move_left(t_player *player, int speed, float cos_a, float sin_a);
+void	move_right(t_player *player, int speed, float cos_a, float sin_a);
+
 // player.c
 void	init_player(t_player *player);
 int     key_press(int keycode, t_player *player);
 int     key_release(int keycode, t_player *player);
 void	rotate_player(t_player *player);
 void    move_player(t_player *player);
-void	move_up_down(t_player *player, int speed, float cos_a, float sin_a);
-void	move_sideways(t_player *player, int speed, float cos_a, float sin_a);
 
 // raycast.c
 int draw_loop(t_game *game);

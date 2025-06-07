@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 15:38:59 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 20:15:43 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,64 +86,8 @@ void	move_player(t_player *player)
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	rotate_player(player);
-	move_up_down(player, speed, cos_angle, sin_angle);
-	move_sideways(player, speed, cos_angle, sin_angle);
-}
-
-void	move_up_down(t_player *player, int speed, float cos_a, float sin_a)
-{
-	float new_x;
-	float new_y;
-	float player_size;
-
-	player_size = COLLISION_BUFFER; // Size of the player for collision detection
-	if (player->key_up)
-	{
-		new_x = player->x + speed * cos_a;
-		new_y = player->y + speed * sin_a;
-		if (!is_colliding(new_x, new_y, player->game, player_size))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-	if (player->key_down)
-	{
-		new_x = player->x - speed * cos_a;
-		new_y = player->y - speed * sin_a;
-		if (!is_colliding(new_x, new_y, player->game, player_size))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-}
-
-void	move_sideways(t_player *player, int speed, float cos_a, float sin_a)
-{
-	float new_x;
-	float new_y;
-	float player_size;
-
-	player_size = COLLISION_BUFFER;
-	if (player->key_left)
-	{
-		new_x = player->x + speed * sin_a;
-		new_y = player->y - speed * cos_a;
-		if (!is_colliding(new_x, new_y, player->game, player_size))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-	if (player->key_right)
-	{
-		new_x = player->x - speed * sin_a;
-		new_y = player->y + speed * cos_a;
-		if (!is_colliding(new_x, new_y, player->game, player_size))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
+	move_up(player, speed, cos_angle, sin_angle);
+	move_down(player, speed, cos_angle, sin_angle);
+	move_left(player, speed, cos_angle, sin_angle);
+	move_right(player, speed, cos_angle, sin_angle);
 }

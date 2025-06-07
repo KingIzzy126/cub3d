@@ -10,6 +10,7 @@ MLX = ./mlx
 SRCS =	draw.c \
 		init.c \
 		main.c \
+		moves.c \
 		player.c \
 		raycast.c \
 		utils.c \
