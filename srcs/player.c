@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 15:37:07 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 15:38:59 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,14 @@ void	move_up_down(t_player *player, int speed, float cos_a, float sin_a)
 {
 	float new_x;
 	float new_y;
-	
+	float player_size;
+
+	player_size = COLLISION_BUFFER; // Size of the player for collision detection
 	if (player->key_up)
 	{
 		new_x = player->x + speed * cos_a;
 		new_y = player->y + speed * sin_a;
-		if (!sensor(new_x + COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
+		if (!is_colliding(new_x, new_y, player->game, player_size))
 		{
 			player->x = new_x;
 			player->y = new_y;
@@ -109,7 +111,7 @@ void	move_up_down(t_player *player, int speed, float cos_a, float sin_a)
 	{
 		new_x = player->x - speed * cos_a;
 		new_y = player->y - speed * sin_a;
-		if (!sensor(new_x - COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
+		if (!is_colliding(new_x, new_y, player->game, player_size))
 		{
 			player->x = new_x;
 			player->y = new_y;
@@ -121,12 +123,14 @@ void	move_sideways(t_player *player, int speed, float cos_a, float sin_a)
 {
 	float new_x;
 	float new_y;
-	
+	float player_size;
+
+	player_size = COLLISION_BUFFER;
 	if (player->key_left)
 	{
 		new_x = player->x + speed * sin_a;
 		new_y = player->y - speed * cos_a;
-		if (!sensor(new_x + COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
+		if (!is_colliding(new_x, new_y, player->game, player_size))
 		{
 			player->x = new_x;
 			player->y = new_y;
@@ -136,7 +140,7 @@ void	move_sideways(t_player *player, int speed, float cos_a, float sin_a)
 	{
 		new_x = player->x - speed * sin_a;
 		new_y = player->y + speed * cos_a;
-		if (!sensor(new_x - COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
+		if (!is_colliding(new_x, new_y, player->game, player_size))
 		{
 			player->x = new_x;
 			player->y = new_y;
