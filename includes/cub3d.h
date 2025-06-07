@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/04 15:55:57 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 15:25:22 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define HEIGHT 700
 # define WALL 40
 # define MINIMAP_SCALE 0.2
+# define COLLISION_BUFFER 0.5
 
 # define W 13
 # define A 0
@@ -73,7 +74,6 @@ void put_pixel(int x, int y, int color, t_game *game);
 void draw_square(int x, int y, int size, int color, t_game *game);
 void draw_map(t_game *game);
 void clear_trail(t_game *game);
-void draw_minimap(t_game *game);
 
 // init.c
 void init_game(t_game *game);
@@ -83,16 +83,23 @@ char **get_map(void);
 void	init_player(t_player *player);
 int     key_press(int keycode, t_player *player);
 int     key_release(int keycode, t_player *player);
+void	rotate_player(t_player *player);
 void    move_player(t_player *player);
+void	move_up_down(t_player *player, int speed, float cos_a, float sin_a);
+void	move_sideways(t_player *player, int speed, float cos_a, float sin_a);
 
 // raycast.c
 int draw_loop(t_game *game);
+void render_3d(t_game *game, int i, float dist);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
 void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
+void draw_minimap(t_game *game);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);
+bool is_colliding(float x, float y, t_game *game, float player_size);
 float distance(float x1, float y1, float x2, float y2, t_game *game);
 int	close_window(t_game *game);
+size_t	ft_strlen(const char *str);
 
 #endif

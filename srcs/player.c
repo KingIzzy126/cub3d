@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:41:06 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/04 16:57:16 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 15:37:07 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,29 +86,60 @@ void	move_player(t_player *player)
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	rotate_player(player);
-	moves(player, speed, cos_angle, sin_angle);
+	move_up_down(player, speed, cos_angle, sin_angle);
+	move_sideways(player, speed, cos_angle, sin_angle);
 }
 
-void	moves(t_player *player, int speed, float cos_a, float sin_a)
+void	move_up_down(t_player *player, int speed, float cos_a, float sin_a)
 {
+	float new_x;
+	float new_y;
+	
 	if (player->key_up)
 	{
-		player->x += speed * cos_a;
-		player->y += speed * sin_a;
+		new_x = player->x + speed * cos_a;
+		new_y = player->y + speed * sin_a;
+		if (!sensor(new_x + COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
+		{
+			player->x = new_x;
+			player->y = new_y;
+		}
 	}
 	if (player->key_down)
 	{
-		player->x -= speed * cos_a;
-		player->y -= speed * sin_a;
+		new_x = player->x - speed * cos_a;
+		new_y = player->y - speed * sin_a;
+		if (!sensor(new_x - COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
+		{
+			player->x = new_x;
+			player->y = new_y;
+		}
 	}
+}
+
+void	move_sideways(t_player *player, int speed, float cos_a, float sin_a)
+{
+	float new_x;
+	float new_y;
+	
 	if (player->key_left)
 	{
-		player->x += speed * sin_a;
-		player->y -= speed * cos_a;
+		new_x = player->x + speed * sin_a;
+		new_y = player->y - speed * cos_a;
+		if (!sensor(new_x + COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
+		{
+			player->x = new_x;
+			player->y = new_y;
+		}
 	}
 	if (player->key_right)
 	{
-		player->x -= speed * sin_a;
-		player->y += speed * cos_a;
+		new_x = player->x - speed * sin_a;
+		new_y = player->y + speed * cos_a;
+		if (!sensor(new_x - COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
+		{
+			player->x = new_x;
+			player->y = new_y;
+		}
 	}
 }

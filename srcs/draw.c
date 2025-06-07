@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:03:15 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 20:51:08 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 13:55:13 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,6 @@ void draw_map(t_game *game)
         }
         y++;
     }
-}
-
-void draw_minimap(t_game *game)
-{
-    int tile_size;
-    int x;
-    int y;
-    
-    tile_size = 8; // size of square on minimap
-    y = 0;
-    while (game->map[y])
-    {
-        x = 0;
-        while (game->map[y][x])
-        {
-            if (game->map[y][x] == '1')
-                draw_square(x * tile_size, y * tile_size, tile_size, 0xAAAAAA, game);
-            x++;
-        }
-        y++;
-    }
-
-    // Draw player on minimap
-    draw_square(game->player.x / WALL * tile_size, game->player.y / WALL * tile_size, tile_size / 2, 0x00FF00, game);
 }
 
 void clear_trail(t_game *game)

@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:00:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/04 15:54:25 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/06 17:52:37 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void init_game(t_game *game)
     game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Halo Infinite");
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
     game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
-    game->ceiling_color = (0 << 16) | (0 << 8) | 128;       // Navy dark blue: RGB(0, 0, 128)
-    game->floor_color = (46 << 16) | (8 << 8) | 84;        // Dark purple: RGB(46, 8, 84) 
+    game->ceiling_color = (0 << 16) | (0 << 8) | 0;        // Black: RGB(0, 0, 128)
+    game->floor_color = (0 << 16) | (0 << 8) | 128;        // Navy dark blue: RGB(46, 8, 84) 
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 

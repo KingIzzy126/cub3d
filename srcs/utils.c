@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:02:20 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/05/20 18:05:32 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 15:37:23 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ bool sensor(float px, float py, t_game *game)
     int x;
     int y;
 
-    x = px / WALL;
-    y = py / WALL;
-    if(game->map[y][x] == '1')
+    x = (int)(px / WALL);
+    y = (int)(py / WALL);
+    
+    if (x < 0 || y < 0 || !game->map[y])
+        return (true); // Out of bounds
+    if (x >= (int)ft_strlen(game->map[y])) // Protection
         return (true);
-    return (false);
+    return (game->map[y][x] == '1');
 }
 
 float distance(float x1, float y1, float x2, float y2, t_game *game)
@@ -43,4 +46,16 @@ int	close_window(t_game *game) // Close window
 	mlx_destroy_image(game->mlx, game->img);
 	mlx_destroy_window(game->mlx, game->win);
 	exit(EXIT_SUCCESS);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }
