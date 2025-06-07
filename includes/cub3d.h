@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 20:13:20 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 22:18:58 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@
 
 typedef struct s_game t_game;
 
+typedef struct s_texture
+{
+	void	*img;
+	char		*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}	t_texture;
+
+typedef struct s_rayhit
+{
+	float	x;
+	float	y;
+	float	distance;
+	char	direction; // 'N', 'S', 'E', 'W'
+}	t_rayhit;
+
 typedef struct s_player
 {
     float x;
@@ -54,6 +73,10 @@ typedef struct s_player
 
 typedef struct s_game
 {
+    t_texture	north;
+	t_texture	south;
+	t_texture	west;
+	t_texture	east;
     void *mlx;
     void *win;
     void *img;
@@ -78,6 +101,7 @@ void clear_trail(t_game *game);
 // init.c
 void init_game(t_game *game);
 char **get_map(void);
+void load_texture(t_game *game, t_texture *tex, char *path);
 
 // moves.c
 void	move_up(t_player *player, int speed, float cos_a, float sin_a);
@@ -94,10 +118,15 @@ void    move_player(t_player *player);
 
 // raycast.c
 int draw_loop(t_game *game);
-void render_3d(t_game *game, int i, float dist);
+void render_3d(t_game *game, int i, float dist, t_texture *tex, float tex_x);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
 void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
 void draw_minimap(t_game *game);
+
+// texture.c
+t_texture *get_wall_texture(t_game *game, float ray_x, float ray_y, float cos_a, float sin_a);
+void draw_textured_wall_strip(t_game *game, int i, int start_y, int end_y, int height, t_texture *tex, float tex_x);
+void project_wall_column(t_game *game, t_player *player, float ray_x, float ray_y, float cos_angle, float sin_angle, int x);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);

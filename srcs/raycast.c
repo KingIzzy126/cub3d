@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:04:18 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/06 18:42:24 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 21:33:16 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	draw_lines(t_player *player, t_game *game, float start_x, int i)
 	float	sin_angle;
 	float	ray_x;
 	float	ray_y;
-	float	dist;
 
 	cos_angle = cos(start_x);
 	sin_angle = sin(start_x);
@@ -35,8 +34,7 @@ void	draw_lines(t_player *player, t_game *game, float start_x, int i)
 		ray_x += cos_angle;
 		ray_y += sin_angle;
 	}
-	dist = distance(player->x, player->y, ray_x, ray_y, game);
-	render_3d(game, i, dist);
+    project_wall_column(game, player, ray_x, ray_y, cos_angle, sin_angle, i);
 }
 
 /**
@@ -47,7 +45,7 @@ void	draw_lines(t_player *player, t_game *game, float start_x, int i)
  * 
  * @note Calls draw_floor_ceiling to draw the floor and ceiling.
  */
-void render_3d(t_game *game, int i, float dist)
+void render_3d(t_game *game, int i, float dist, t_texture *tex, float tex_x)
 {
 	int height;
 	int start_y;
@@ -57,11 +55,12 @@ void render_3d(t_game *game, int i, float dist)
 	start_y = (HEIGHT - height) / 2;
 	end = start_y + height;
 	draw_floor_ceiling(game, i, start_y, end, game->floor_color, game->ceiling_color);
-	while (start_y < end)
-	{
-		put_pixel(i, start_y, 200, game);
-		start_y++;
-	}
+    draw_textured_wall_strip(game, i, start_y, end, height, tex, tex_x);
+	// while (start_y < end)
+	// {
+	// 	put_pixel(i, start_y, 200, game);
+	// 	start_y++;
+	// }
 }
 
 /**
