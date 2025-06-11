@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 20:13:20 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/11 13:14:09 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@
 
 typedef struct s_game t_game;
 
+typedef struct s_texture
+{
+    int width;
+    int height;
+    void *img;
+    char *data;
+    int bpp;
+    int size_line;
+    int endian;
+} t_texture;
+
+
 typedef struct s_player
 {
     float x;
@@ -66,6 +78,7 @@ typedef struct s_game
     int ceiling_color;
 
     char **map;
+    t_texture textures[4];
     t_player player;
 }   t_game;
 

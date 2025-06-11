@@ -67,14 +67,18 @@ void clear_trail(t_game *game);
 void init_game(t_game *game);
 char **get_map(void);
 
+// moves.c
+void	move_up(t_player *player, int speed, float cos_a, float sin_a);
+void	move_down(t_player *player, int speed, float cos_a, float sin_a);
+void	move_left(t_player *player, int speed, float cos_a, float sin_a);
+void	move_right(t_player *player, int speed, float cos_a, float sin_a);
+
 // player.c
 void	init_player(t_player *player);
 int     key_press(int keycode, t_player *player);
 int     key_release(int keycode, t_player *player);
 void	rotate_player(t_player *player);
 void    move_player(t_player *player);
-void	move_up_down(t_player *player, int speed, float cos_a, float sin_a);
-void	move_sideways(t_player *player, int speed, float cos_a, float sin_a);
 
 // raycast.c
 int draw_loop(t_game *game);
@@ -85,6 +89,7 @@ void draw_minimap(t_game *game);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);
+bool is_colliding(float x, float y, t_game *game, float player_size);
 float distance(float x1, float y1, float x2, float y2, t_game *game);
 int	close_window(t_game *game);
 size_t	ft_strlen(const char *str);
@@ -163,7 +168,6 @@ void clear_trail(t_game *game)
     }
 }
 
-
 void init_game(t_game *game)
 {
     init_player(&game->player);
@@ -216,6 +220,77 @@ int main(void)
     return 0;
 }
 
+void	move_up(t_player *player, int speed, float cos_a, float sin_a)
+{
+	float new_x;
+	float new_y;
+	float player_size;
+
+	player_size = COLLISION_BUFFER;
+	if (player->key_up)
+	{
+		new_x = player->x + speed * cos_a;
+		new_y = player->y + speed * sin_a;
+		if (!is_colliding(new_x, player->y, player->game, player_size))
+			player->x = new_x;
+		if (!is_colliding(player->x, new_y, player->game, player_size))
+			player->y = new_y;
+	}
+}
+
+void	move_down(t_player *player, int speed, float cos_a, float sin_a)
+{
+	float new_x;
+	float new_y;
+	float player_size;
+
+	player_size = COLLISION_BUFFER;
+	if (player->key_down)
+	{
+		new_x = player->x - speed * cos_a;
+		new_y = player->y - speed * sin_a;
+		if (!is_colliding(new_x, player->y, player->game, player_size))
+			player->x = new_x;
+		if (!is_colliding(player->x, new_y, player->game, player_size))
+			player->y = new_y;
+	}
+}
+
+void	move_left(t_player *player, int speed, float cos_a, float sin_a)
+{
+	float new_x;
+	float new_y;
+	float player_size;
+
+	player_size = COLLISION_BUFFER;
+	if (player->key_left)
+	{
+		new_x = player->x + speed * sin_a;
+		new_y = player->y - speed * cos_a;
+		if (!is_colliding(new_x, player->y, player->game, player_size))
+			player->x = new_x;
+		if (!is_colliding(player->x, new_y, player->game, player_size))
+			player->y = new_y;
+	}
+}
+
+void	move_right(t_player *player, int speed, float cos_a, float sin_a)
+{
+	float new_x;
+	float new_y;
+	float player_size;
+
+	player_size = COLLISION_BUFFER;
+	if (player->key_right)
+	{
+		new_x = player->x - speed * sin_a;
+		new_y = player->y + speed * cos_a;
+		if (!is_colliding(new_x, player->y, player->game, player_size))
+			player->x = new_x;
+		if (!is_colliding(player->x, new_y, player->game, player_size))
+			player->y = new_y;
+	}
+}
 
 void	init_player(t_player *player)
 {
@@ -291,64 +366,11 @@ void	move_player(t_player *player)
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	rotate_player(player);
-	move_up_down(player, speed, cos_angle, sin_angle);
-	move_sideways(player, speed, cos_angle, sin_angle);
+	move_up(player, speed, cos_angle, sin_angle);
+	move_down(player, speed, cos_angle, sin_angle);
+	move_left(player, speed, cos_angle, sin_angle);
+	move_right(player, speed, cos_angle, sin_angle);
 }
-
-void	move_up_down(t_player *player, int speed, float cos_a, float sin_a)
-{
-	float new_x;
-	float new_y;
-	
-	if (player->key_up)
-	{
-		new_x = player->x + speed * cos_a;
-		new_y = player->y + speed * sin_a;
-		if (!sensor(new_x + COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-	if (player->key_down)
-	{
-		new_x = player->x - speed * cos_a;
-		new_y = player->y - speed * sin_a;
-		if (!sensor(new_x - COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-}
-
-void	move_sideways(t_player *player, int speed, float cos_a, float sin_a)
-{
-	float new_x;
-	float new_y;
-	
-	if (player->key_left)
-	{
-		new_x = player->x + speed * sin_a;
-		new_y = player->y - speed * cos_a;
-		if (!sensor(new_x + COLLISION_BUFFER, new_y - COLLISION_BUFFER, player->game))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-	if (player->key_right)
-	{
-		new_x = player->x - speed * sin_a;
-		new_y = player->y + speed * cos_a;
-		if (!sensor(new_x - COLLISION_BUFFER, new_y + COLLISION_BUFFER, player->game))
-		{
-			player->x = new_x;
-			player->y = new_y;
-		}
-	}
-}
-
 
 /** 
  * @brief Shoots a ray from the player and calculates where it hits a wall.
@@ -491,7 +513,15 @@ int draw_loop(t_game *game)
     return (0);
 }
 
-
+/**
+ * @brief Checks if a given point (px, py) is inside a wall or out of bounds.
+ * 
+ * @param px The x-coordinate of the point to check.
+ * @param py The y-coordinate of the point to check.
+ * @param game Pointer to the game structure containing the map.
+ * @return true If the point is inside a wall or out of bounds.
+ * @return false If the point is valid and not inside a wall.
+ */
 bool sensor(float px, float py, t_game *game)
 {
     int x;
@@ -500,11 +530,32 @@ bool sensor(float px, float py, t_game *game)
     x = (int)(px / WALL);
     y = (int)(py / WALL);
     
-    if (x < 0 || y < 0 || !game->map[y])
+    if (x < 0 || y < 0 || !game->map[y]) // Check if point is out of bounds
         return (true); // Out of bounds
-    if (x >= (int)ft_strlen(game->map[y])) // Protection
-        return (true);
+    if (x >= (int)ft_strlen(game->map[y])) // Check if x exceeds the row length
+        return (true); 
     return (game->map[y][x] == '1');
+}
+
+/** * @brief Checks all the 4 player corners if it's colliding with a wall.
+ * @param x Player's x position.
+ * @param y Player's y position.
+ * @param game Pointer to the game struct.
+ * @param player_size Size of the player (for collision detection).
+ * @return true if collision detected, false no collision.
+ */
+
+bool is_colliding(float x, float y, t_game *game, float player_size)
+{
+    if (sensor(x - player_size, y - player_size, game)) // Top-left
+        return true; 
+    if (sensor(x + player_size, y - player_size, game)) // Top-right
+        return true;
+    if (sensor(x - player_size, y + player_size, game)) // Bottom-left
+        return true;
+    if (sensor(x + player_size, y + player_size, game)) // Bottom-right
+        return true;
+    return false;
 }
 
 float distance(float x1, float y1, float x2, float y2, t_game *game)
