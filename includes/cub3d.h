@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/11 13:14:09 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/11 13:56:55 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_texture
     int size_line;
     int endian;
 } t_texture;
-
 
 typedef struct s_player
 {
@@ -91,6 +90,7 @@ void clear_trail(t_game *game);
 // init.c
 void init_game(t_game *game);
 char **get_map(void);
+void load_textures(t_game *game);
 
 // moves.c
 void	move_up(t_player *player, int speed, float cos_a, float sin_a);
@@ -107,7 +107,7 @@ void    move_player(t_player *player);
 
 // raycast.c
 int draw_loop(t_game *game);
-void render_3d(t_game *game, int i, float dist);
+void render_3d(t_game *game, int i, float dist, int tex, float tex_pos);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
 void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
 void draw_minimap(t_game *game);

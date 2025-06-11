@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:04:18 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/11 13:34:17 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/11 14:03:08 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,44 @@
  * @note Minimap scale is to size down in minimap position (top left)
  * @note Calls 3d rendering in the end.
  */
-void	draw_lines(t_player *player, t_game *game, float start_x, int i) 
+void	draw_lines(t_player *player, t_game *game, float start_x, int i)
 {
 	float	cos_angle;
 	float	sin_angle;
 	float	ray_x;
 	float	ray_y;
+    float   prev_x;
+    float   prev_y;
 	float	dist;
+    int     tex;
+    float   tex_pos;
 
 	cos_angle = cos(start_x);
 	sin_angle = sin(start_x);
 	ray_x = player->x;
 	ray_y = player->y;
+    prev_x = ray_x;
+    prev_y = ray_y;
 	while (!sensor(ray_x, ray_y, game))
 	{
 		put_pixel(ray_x * MINIMAP_SCALE, ray_y * MINIMAP_SCALE, 0xFF00FF, game);
+        prev_x = ray_x;
+        prev_y = ray_y;
 		ray_x += cos_angle;
 		ray_y += sin_angle;
 	}
 	dist = distance(player->x, player->y, ray_x, ray_y, game);
-	render_3d(game, i, dist);
+    if ((int)(prev_x / WALL) != (int)(ray_x / WALL))
+    {
+        tex = cos_angle < 0 ? 0 : 1;
+        tex_pos = fmodf(prev_y, WALL) / WALL;
+    }
+    else
+    {
+        tex = sin_angle < 0 ? 2 : 3;
+        tex_pos = fmodf(prev_x, WALL) / WALL;
+    }
+    render_3d(game, i, dist, tex, tex_pos);
 }
 
 /**
@@ -47,21 +65,36 @@ void	draw_lines(t_player *player, t_game *game, float start_x, int i)
  * 
  * @note Calls draw_floor_ceiling to draw the floor and ceiling.
  */
-void render_3d(t_game *game, int i, float dist)
+void render_3d(t_game *game, int i, float dist, int tex, float tex_pos)
 {
-	int height;
-	int start_y;
-	int end;
+    int height;
+    int start_y;
+    int end;
+    float step;
+    float tex_y;
+    int tex_x;
+    int color;
+    t_texture *t;
 
-	height = (WALL / dist) * (WIDTH / 2);
-	start_y = (HEIGHT - height) / 2;
-	end = start_y + height;
-	draw_floor_ceiling(game, i, start_y, end, game->floor_color, game->ceiling_color);
-	while (start_y < end)
-	{
-		put_pixel(i, start_y, 200, game);
-		start_y++;
-	}
+    height = (WALL / dist) * (WIDTH / 2);
+    start_y = (HEIGHT - height) / 2;
+    end = start_y + height;
+    draw_floor_ceiling(game, i, start_y, end, game->floor_color, game->ceiling_color);
+    t = &game->textures[tex];
+    step = (float)t->height / height;
+    tex_y = 0;
+    tex_x = (int)(tex_pos * t->width);
+    while (start_y < end)
+    {
+            int ty = (int)tex_y;
+            int index = ty * t->size_line + tex_x * (t->bpp / 8);
+            color = (unsigned char)t->data[index] |
+                    ((unsigned char)t->data[index + 1] << 8) |
+                    ((unsigned char)t->data[index + 2] << 16);
+            put_pixel(i, start_y, color, game);
+            tex_y += step;
+            start_y++;
+    }
 }
 
 /**
