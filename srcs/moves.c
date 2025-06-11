@@ -6,11 +6,12 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 19:53:43 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/07 21:28:17 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/07 20:12:10 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
 
 void	move_up(t_player *player, int speed, float cos_a, float sin_a)
 {

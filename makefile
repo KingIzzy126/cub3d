@@ -13,7 +13,6 @@ SRCS =	draw.c \
 		moves.c \
 		player.c \
 		raycast.c \
-		texture.c \
 		utils.c \
 
 SRC = $(addprefix ./srcs/,$(SRCS))
