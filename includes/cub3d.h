@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/11 13:56:55 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/11 15:13:47 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,11 @@ void render_3d(t_game *game, int i, float dist, int tex, float tex_pos);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
 void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
 void draw_minimap(t_game *game);
+
+// textures.c
+void select_texture(float cos_a, float sin_a, float ray_x, float prev_x, float prev_y, int *tex, float *tex_pos);
+void cast_ray(t_player *player, t_game *game, float start_x, float *dist, int *tex, float *tex_pos);
+void render_wall_texture(t_game *game, int i, int start_y, int end, int height, int tex, float tex_pos);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);

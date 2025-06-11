@@ -6,54 +6,28 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:04:18 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/11 14:03:08 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/11 15:13:30 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-/** 
- * @brief Shoots a ray from the player and calculates where it hits a wall.
- * @note Minimap scale is to size down in minimap position (top left)
- * @note Calls 3d rendering in the end.
+/**
+ * @brief Draws a vertical line for each ray casted from the player.
+ * @param player Pointer to the player struct.
+ * @param game Pointer to the game struct (render data).
+ * @param start_x Starting angle for the ray.
+ * @param i Index of the vertical wall strip being drawn.
+ * 
+ * @note Calls cast_ray to get distance and texture information, then calls render_3d to draw the wall.
  */
 void	draw_lines(t_player *player, t_game *game, float start_x, int i)
 {
-	float	cos_angle;
-	float	sin_angle;
-	float	ray_x;
-	float	ray_y;
-    float   prev_x;
-    float   prev_y;
 	float	dist;
     int     tex;
     float   tex_pos;
-
-	cos_angle = cos(start_x);
-	sin_angle = sin(start_x);
-	ray_x = player->x;
-	ray_y = player->y;
-    prev_x = ray_x;
-    prev_y = ray_y;
-	while (!sensor(ray_x, ray_y, game))
-	{
-		put_pixel(ray_x * MINIMAP_SCALE, ray_y * MINIMAP_SCALE, 0xFF00FF, game);
-        prev_x = ray_x;
-        prev_y = ray_y;
-		ray_x += cos_angle;
-		ray_y += sin_angle;
-	}
-	dist = distance(player->x, player->y, ray_x, ray_y, game);
-    if ((int)(prev_x / WALL) != (int)(ray_x / WALL))
-    {
-        tex = cos_angle < 0 ? 0 : 1;
-        tex_pos = fmodf(prev_y, WALL) / WALL;
-    }
-    else
-    {
-        tex = sin_angle < 0 ? 2 : 3;
-        tex_pos = fmodf(prev_x, WALL) / WALL;
-    }
+    
+    tex_pos = 0.0;
+    cast_ray(player, game, start_x, &dist, &tex, &tex_pos);
     render_3d(game, i, dist, tex, tex_pos);
 }
 
@@ -70,31 +44,13 @@ void render_3d(t_game *game, int i, float dist, int tex, float tex_pos)
     int height;
     int start_y;
     int end;
-    float step;
-    float tex_y;
-    int tex_x;
-    int color;
-    t_texture *t;
 
     height = (WALL / dist) * (WIDTH / 2);
     start_y = (HEIGHT - height) / 2;
     end = start_y + height;
+
     draw_floor_ceiling(game, i, start_y, end, game->floor_color, game->ceiling_color);
-    t = &game->textures[tex];
-    step = (float)t->height / height;
-    tex_y = 0;
-    tex_x = (int)(tex_pos * t->width);
-    while (start_y < end)
-    {
-            int ty = (int)tex_y;
-            int index = ty * t->size_line + tex_x * (t->bpp / 8);
-            color = (unsigned char)t->data[index] |
-                    ((unsigned char)t->data[index + 1] << 8) |
-                    ((unsigned char)t->data[index + 2] << 16);
-            put_pixel(i, start_y, color, game);
-            tex_y += step;
-            start_y++;
-    }
+    render_wall_texture(game, i, start_y, end, height, tex, tex_pos);
 }
 
 /**
