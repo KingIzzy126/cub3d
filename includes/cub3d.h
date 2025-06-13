@@ -6,7 +6,7 @@
 /*   By: ismailalashqar <ismailalashqar@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 16:13:59 by ismailalash       #+#    #+#             */
-/*   Updated: 2025/06/11 13:56:55 by ismailalash      ###   ########.fr       */
+/*   Updated: 2025/06/13 14:33:07 by ismailalash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,30 @@ typedef struct s_game
     t_player player;
 }   t_game;
 
+typedef struct s_draw
+{
+	float	cos_angle;
+	float	sin_angle;
+	float	ray_x;
+	float	ray_y;
+    float   prev_x;
+    float   prev_y;
+	float	dist;
+    int     tex;
+    float   tex_pos;
+} t_draw;
+
+typedef struct s_render
+{
+    int height;
+    int start_y;
+    int end;
+    float step;
+    float tex_y;
+    int tex_x;
+    int color;
+} t_render;
+
 // draw.c 
 void put_pixel(int x, int y, int color, t_game *game);
 void draw_square(int x, int y, int size, int color, t_game *game);
@@ -111,6 +135,10 @@ void render_3d(t_game *game, int i, float dist, int tex, float tex_pos);
 void draw_lines(t_player *player, t_game *game, float start_x, int i);
 void draw_floor_ceiling(t_game *game, int x, int wall_top, int wall_bottom, int floor_color, int ceiling_color);
 void draw_minimap(t_game *game);
+
+// texture.c
+void    init_draw(t_draw *draw, t_player *player, float start_x);
+void    change_name_function(t_draw *draw);
 
 // utils.c
 bool sensor(float px, float py, t_game *game);
